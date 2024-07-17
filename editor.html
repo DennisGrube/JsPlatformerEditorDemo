@@ -1,0 +1,200 @@
+<!doctype html>
+<html lang="en-US">
+
+<head>
+    <meta charset="utf-8" />
+    <title>Platforminator 3003 - Level Editor</title>
+    <link rel="icon" type="image/x-icon" href="./favicon.png">
+    <link rel="stylesheet" href="./style.css">
+    <style>
+        * {
+            color: #DDD;
+        }
+
+        body,
+        html {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+        }
+
+        #container {
+            display: flex;
+        }
+
+        #tileset_canvas {
+            display: block;
+            position: sticky;
+            background: #444;
+            margin-left: 8px;
+            margin-top: 8px;
+            margin-bottom: 8px;
+            background: repeating-conic-gradient(#444 0% 25%, #333 0% 50%) 50% / 16px 16px;
+        }
+
+        #map_canvas {
+            background: #444;
+            margin-top: 8px;
+            margin-bottom: 8px;
+            background: repeating-conic-gradient(#444 0% 25%, #333 0% 50%) 50% / 16px 16px;
+        }
+
+        #debug_display {
+            display: flex;
+            flex-flow: column;
+
+            width: 20%;
+            margin-left: 0px;
+            gap: 4px;
+        }
+
+        #tileset_map_separator {
+            border-left: 12px solid transparent;
+            height: auto;
+            cursor: ew-resize;
+        }
+
+        #layer_select {
+            color: #DDD;
+            width: 3rem;
+        }
+
+        .debug_label {
+            color: #DDD;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .zoom_button {
+            width: 32px;
+            height: 32px;
+            background-color: #333;
+        }
+
+        #map_stats {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        #stats_map_size {
+            display: flex;
+            align-items: flex-start;
+            justify-content: flex-start;
+        }
+
+        #stats_cursor_pos {
+            display: flex;
+            align-items: flex-end;
+        }
+
+        #map_stats {
+            display: flex;
+            justify-content: space-between;
+            margin-right: 10%;
+            width: 33%;
+        }
+
+        #layers {
+            display: flex;
+            flex-flow: column;
+            gap: 8px;
+        }
+
+        #layer_picker {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+        }
+
+        #tileset_picker {
+            width: 256px;
+            margin-left: 8px;
+        }
+
+        #bottom_stuff {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            width: 100%;
+        }
+    </style>
+</head>
+
+<body>
+    <script type="module">
+        import Editor from "./src/Editor/Editor.mjs";
+        window.onload = () => {
+            Editor.start();
+        }
+    </script>
+
+    <div id="nav_wrapper">
+
+        <div id="switch">
+            <a href="./game.html" class="small_nav_button">Switch to Game</a>
+        </div>
+
+        <div id="debug_display">
+            <label id="d_state" class="debug_label">[empty]</label>
+            <div id="zoom_label">
+                <label for="tileset_zoom_buttons">Zoom: </label>
+                <text id="tileset_zoom_text">1</text>
+            </div>
+            <div id="tileset_zoom_buttons">
+                <button id="tileset_zoom_-" class="zoom_button">-</button>
+                <button id="tileset_zoom_o" class="zoom_button">O</button>
+                <button id="tileset_zoom_+" class="zoom_button">+</button>
+            </div>
+        </div>
+
+        <div id="layers">
+            <div id="layer_picker">
+                <label for="layer_select" id="layer_count">Layer</label>
+                <input type="number" min="1" max="99" id="layer_select" />
+            </div>
+
+            <div id="layer_buttons">
+                <button id="remove_layer" class="zoom_button">-</button>
+                <button id="add_layer" class="zoom_button">+</button>
+                <button id="shift_layer_up" class="zoom_button">^</button>
+                <button id="shift_layer_down" class="zoom_button">v</button>
+            </div>
+
+        </div>
+
+        <div id="map_zoom_buttons">
+            <label id="map_zoom_text">Zoom: 1</label>
+            <button id="map_zoom_-" class="zoom_button">-</button>
+            <button id="map_zoom_o" class="zoom_button">O</button>
+            <button id="map_zoom_+" class="zoom_button">+</button>
+        </div>
+
+    </div>
+
+    <div id="container">
+        <div id="tileset_container">
+            <div id="tileset">
+                <canvas id="tileset_canvas" class="canvas"></canvas>
+            </div>
+        </div>
+        <div id="tileset_map_separator"></div>
+        <div id="map_container">
+            <canvas id="map_canvas" class="canvas"></canvas>
+        </div>
+    </div>
+
+    <div id="bottom_stuff">
+        <div id="tileset_picker_container">
+            <select id="tileset_picker"></select>
+        </div>
+
+        <div id="map_stats">
+            <div id="stats_map_size"></div>
+            <div id="stats_cursor_pos"></div>
+        </div>
+    </div>
+
+</body>
+
+</html>

@@ -1,0 +1,101 @@
+<!doctype html>
+<html lang="en-US">
+
+<head>
+    <meta charset="utf-8" />
+    <title>Platforminator 3003</title>
+    <link rel="icon" type="image/x-icon" href="./favicon.png">
+    <link rel="stylesheet" href="./style.css">
+
+    <style>
+        #ui_elements {
+            position: relative;
+            display: block;
+            margin: auto;
+        }
+
+        #global_settings {
+            position: absolute;
+            left: 0%;
+            color: #DDD;
+            font-size: 18px;
+            margin-top: 8px;
+        }
+
+        #entity_status {
+            position: absolute;
+            left: 50%;
+            transform: translate(-50%, 0%);
+            color: #DDD;
+            font-size: 18px;
+            margin-top: 8px;
+        }
+
+        #entity_settings {
+            position: absolute;
+            width: max-content;
+            left: 100%;
+            transform: translate(-225px, 0%);
+            color: #DDD;
+            font-size: 18px;
+            margin-top: 8px;
+        }
+
+        .canvas {
+            cursor: none;
+
+        }
+
+        .number_input {
+            color: #DDD;
+            width: 64px;
+        }
+    </style>
+</head>
+
+<body>
+    <script type="module">
+        import Game from "./src/Game/Game.mjs";
+        window.onload = () => {
+            Game.start();
+        }
+    </script>
+
+    <div id="switch">
+        <a href="./editor.html" id="back" class="small_nav_button">Switch to Editor</a>
+    </div>
+
+    <canvas id="game_canvas" class="canvas"></canvas>
+
+    <div id="ui_elements">
+
+        <div id="global_settings">
+            <label for="scale">Scale</label>
+            <input type="number" class="number_input" id="scale">
+            <input type="checkbox" id="scale_auto" checked>
+            <label for="scale_auto">Auto</label>
+            <br>
+            <input type="checkbox" id="show_bounds">
+            <label for="show_bounds">Show Bounds</label>
+        </div>
+
+        <div id="entity_status">
+            <p id="name">Entity: </p>
+            <p id="state">State: </p>
+        </div>
+
+        <div id="entity_settings">
+            <label for="position_x">X: </label>
+            <input type="number" class="number_input" id="position_x">
+            <label for="position_y">Y: </label>
+            <input type="number" class="number_input" id="position_y">
+            <p id="velocity">Velocity: </p>
+            <input type="checkbox" id="apply_gravity">
+            <label for="apply_gravity">Apply Gravity</label>
+        </div>
+
+    </div>
+
+</body>
+
+</html>
