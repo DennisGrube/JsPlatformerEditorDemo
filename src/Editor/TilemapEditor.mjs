@@ -41,6 +41,8 @@ export default class TilemapEditor {
             const max = 500;
             const width = this.mapSizeUiElements.get(`width`);
             const height = this.mapSizeUiElements.get(`height`);
+            const previousWidth = this.tilemap.width;
+            const previousHeight = this.tilemap.height;
 
             if (width.valueAsNumber >= min && width.valueAsNumber <= max && 
                 height.valueAsNumber >= min && height.valueAsNumber <= max) {

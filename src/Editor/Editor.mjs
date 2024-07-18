@@ -72,7 +72,7 @@ export default class Editor {
     oldMousePos = new Vector2(0, 0);
 
     separator = document.getElementById(`tileset_map_separator`);
-    debugLayerLabel = document.getElementById(`d_selected_layer`);
+    debugLayerLabel = document.getElementById(`d_selected_layer`); // TODO: rename
     layerSelect = document.getElementById(`layer_select`);
     layersText = document.getElementById(`layers_amount`);
     bottomStuff = document.getElementById(`bottom_stuff`);
