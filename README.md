@@ -5,7 +5,7 @@ LIVE DEMO:
 
 https://dennisgr.itch.io/jsplatformereditordemo
 
-Loading assets may take a while depending on itch.io's load, please be patient.
+Loading assets may take a while.
 
 Editor Controls:
  - WASD, Middle Mouse button, Scroll Wheel (vertical, horizontal, click), Space + Left Click: Move camera
