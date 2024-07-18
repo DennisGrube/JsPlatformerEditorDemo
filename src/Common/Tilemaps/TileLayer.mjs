@@ -1,9 +1,10 @@
-import Canvas from "../Canvas.mjs";
-import Camera from "../Camera.mjs";
-import { Rectangle } from "../Maths/Shapes.mjs";
-import SpriteBatch from "../SpriteBatch.mjs";
+import Canvas from "/src/Common/Canvas.mjs";
+import Camera from "/src/Common/Camera.mjs";
+import { Rectangle } from "/src/Common/Maths/Shapes.mjs";
+import SpriteBatch from "/src/Common/SpriteBatch.mjs";
+import Vector2 from "/src/Common/Maths/Vector2.mjs";
+
 import { TILE_SIZE } from "./Tile.mjs";
-import Vector2 from "../Maths/Vector2.mjs";
 
 export default class TileLayer {
     #tiles;

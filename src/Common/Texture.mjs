@@ -1,5 +1,4 @@
 import ContentManager from "./ContentManager.mjs";
-import Size from "./Maths/Size.mjs";
 import { Rectangle } from "./Maths/Shapes.mjs";
 
 export default class Texture {

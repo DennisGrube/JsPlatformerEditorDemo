@@ -1,4 +1,3 @@
-
 export default class ContentManager {
     static #imagePath = `./img`;
     static #images = new Map();

@@ -1,7 +1,8 @@
-import { Rectangle } from "../Maths/Shapes.mjs";
-import Size from "../Maths/Size.mjs";
+import { Rectangle } from "/src/Common/Maths/Shapes.mjs";
+import Size from "/src/Common/Maths/Size.mjs";
+import Vector2 from "/src/Common/Maths/Vector2.mjs";
+
 import Frame from "./Frame.mjs";
-import Vector2 from "../Maths/Vector2.mjs";
 
 export default class Animation {
     /** @param { Frame } */

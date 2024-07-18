@@ -1,5 +1,4 @@
-import MathHelper from "../Maths/MathHelper.mjs";
-import Vector2 from "../Maths/Vector2.mjs";
+import Vector2 from "/src/Common/Maths/Vector2.mjs";
 
 export default class Transform {
     position = new Vector2(0, 0);

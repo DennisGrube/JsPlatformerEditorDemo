@@ -1,7 +1,8 @@
-import DrawHelper from "../DrawHelpers.mjs";
-import Entity from "../Entities/Entity.mjs";
+import DrawHelper from "/src/Common/DrawHelpers.mjs";
+import Entity from "/src/Common/Entities/Entity.mjs";
+import NotImplementedError from "/src/Common/Error.mjs";
+
 import Vector2 from "./Vector2.mjs";
-import NotImplementedError from "../Error.mjs";
 
 export class Shape {
     static shape_ids = 0; // TODO: move this over to hitboxes when they exist

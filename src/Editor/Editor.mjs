@@ -1,14 +1,15 @@
-import Canvas from "../Common/Canvas.mjs";
-import Texture from "../Common/Texture.mjs";
-import SpriteBatch from "../Common/SpriteBatch.mjs";
-import Vector2 from "../Common/Maths/Vector2.mjs";
-import Camera from "../Common/Camera.mjs";
-import Input from "../Common/Input.mjs";
-import MathHelper from "../Common/Maths/MathHelper.mjs";
-import { Rectangle } from "../Common/Maths/Shapes.mjs";
-import Size from "../Common/Maths/Size.mjs";
-import Tilemap from "../Common/Tilemaps/Tilemap.mjs";
-import { TILE_SIZE } from "../Common/Tilemaps/Tile.mjs";
+import Canvas from "/src/Common/Canvas.mjs";
+import Texture from "/src/Common/Texture.mjs";
+import SpriteBatch from "/src/Common/SpriteBatch.mjs";
+import Vector2 from "/src/Common/Maths/Vector2.mjs";
+import Camera from "/src/Common/Camera.mjs";
+import Input from "/src/Common/Input.mjs";
+import MathHelper from "/src/Common/Maths/MathHelper.mjs";
+import { Rectangle } from "/src/Common/Maths/Shapes.mjs";
+import Size from "/src/Common/Maths/Size.mjs";
+import Tilemap from "/src/Common/Tilemaps/Tilemap.mjs";
+import { TILE_SIZE } from "/src/Common/Tilemaps/Tile.mjs";
+
 import TilesetPicker from "./TilesetPicker.mjs";
 
 const updateRate = 60;
