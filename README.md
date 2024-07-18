@@ -9,7 +9,7 @@ Current Editor features:
   - Tileset selection
   - Autofill missing tiles during fast mouse movement
   - Multi tile select (rectangular)
-  - Shift tiles to paint on movement while clicking + dragging to always paint the full stamp instead of overwriting parts of it
+  - Shift tiles to paint on mouse move while clicking + dragging to always paint the full stamp instead of overwriting parts of it
   - Darken layers that are behind the selected layer
   - Draw layers translucently that are in front of the selected layer
 
