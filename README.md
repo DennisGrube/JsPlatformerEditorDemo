@@ -7,8 +7,17 @@ https://dennisgr.itch.io/jsplatformereditordemo
 
 Loading assets may take a while depending on itch.io's load, please be patient.
 
+Editor Controls:
+ - WASD, Middle Mouse button, Scroll Wheel (vertical, horizontal, click), Space + Left Click: Move camera
+ - Shift + Mouse Wheel, Number keys: Select layer
+ - Ctrl + Mouse Wheel or UI +/-: Zoom in/out
+
+Game Controls:
+  - Cursor keys: Move
+  - Space bar: Jump
+
 Important bugs:
-  - When resizing the map to a larger size than the initial size, tiles outside of the initial map's bounds will not be rendered
+  - When resizing the map to a larger size than the initial size, tiles outside of the initial map's bounds will not be rendered despite properly being present in the array
 
 Current Editor features:
   - Resize tileset and tilemap UI area via separator
