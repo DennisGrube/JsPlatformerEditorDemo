@@ -169,6 +169,13 @@ export default class Editor {
                 this.state === editorState.hoveringTileset);
         }
 
+        // suppress autoscroll when pressing the mouse wheel
+        document.addEventListener(`mousedown`, (event) => {
+            if(event.button === 1){
+                event.preventDefault();
+            }
+        })
+
         this.tilemapEditor.tilemap.clear(null);
         this.layerSelect.value = 1;
 
