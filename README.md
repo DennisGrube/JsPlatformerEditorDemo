@@ -28,7 +28,7 @@ Current Game features:
   - Manual canvas scaling based on user preferences (integer only)
 
 Current Common features:
-  - Unlimited game loop with fixed update tick rate (Game updates at 60Hz, but renders interpolated frames depending on user's monitor's refresh rate)
+  - Refresh rate limited game loop with fixed update tick rate (Game updates at 60Hz but renders interpolated frames depending on user's monitor's refresh rate)
   - Rudimentary Content Manager that ensures to only return a texture when it has fully loaded
   - Rectangle shape and basic related math (intersects, contains(Rectangle || Vector2), union etc)
   - Vector2 and basic and basic related math (lerp)
