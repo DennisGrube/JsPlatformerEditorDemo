@@ -10,7 +10,7 @@ Loading assets may take a while. Password: habanero
 Editor Controls:
  - WASD, Middle Mouse button, Scroll Wheel (vertical, horizontal, click), Space + Left Click: Move camera
  - Shift + Mouse Wheel, Number keys: Select layer
- - Ctrl + Mouse Wheel or UI +/-: Zoom in/out
+ - Ctrl + Mouse Wheel or UI +/-: Zoom in/out (use Ctrl + +/- for default browser zoom controls)
 
 Game Controls:
   - Cursor keys: Move
