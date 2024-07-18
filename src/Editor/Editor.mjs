@@ -204,6 +204,20 @@ export default class Editor {
             Editor.selectedLayerId = parseInt(this.layerSelect.value) - 1;
         }
 
+        // in case the user scrolls out of bounds of the array
+        this.layerSelect.max = this.tilemapEditor.tilemap.layers.length;
+    }
+
+    setLayerId(id) {
+        if (id < 0) {
+            Editor.selectedLayerId = 0;
+        } else if (id > Editor.selectedLayerId >= this.tilemapEditor.tilemap.layers.length) {
+            Editor.selectedLayerId = this.tilemapEditor.tilemap.layers.length - 1;
+        } else {
+            Editor.selectedLayerId = id;
+        }
+
+        this.layerSelect.value = Editor.selectedLayerId + 1;
         this.layerSelect.max = this.tilemapEditor.tilemap.layers.length;
     }
 

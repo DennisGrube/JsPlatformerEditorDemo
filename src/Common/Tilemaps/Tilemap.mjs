@@ -33,7 +33,33 @@ export default class Tilemap {
         this.layerButtons.set(`shiftUp`, document.getElementById(`shift_layer_up`));
         this.layerButtons.set(`shiftDown`, document.getElementById(`shift_layer_down`));
 
-        //this.layerButtons.get(`add`).addEventListener(`click`)
+        this.layerButtons.get(`add`).addEventListener(`click`, () => {
+            this.layers.splice(Editor.selectedLayerId + 1, 0, new TileLayer(this.width, this.height));
+            Editor.instance.setLayerId(Editor.selectedLayerId + 1);
+        });
+
+        this.layerButtons.get(`remove`).addEventListener(`click`, () => {
+            if (this.layers.length > 1) {
+                this.layers.splice(Editor.selectedLayerId, 1);
+                Editor.instance.setLayerId(Editor.selectedLayerId - 1);
+            }
+        });
+
+        this.layerButtons.get(`shiftUp`).addEventListener(`click`, () => {
+            let nextLayerId = Editor.selectedLayerId + 1 < this.layers.length ? Editor.selectedLayerId + 1 : 0; 
+            const layerTemp = this.layers.splice(Editor.selectedLayerId, 1)[0];
+
+            this.layers.splice(nextLayerId, 0, layerTemp);
+            Editor.instance.setLayerId(nextLayerId);
+        })
+
+        this.layerButtons.get(`shiftDown`).addEventListener(`click`, () => {
+            let nextLayerId = Editor.selectedLayerId - 1 >= 0 ? Editor.selectedLayerId - 1 : this.layers.length - 1; 
+            const layerTemp = this.layers.splice(Editor.selectedLayerId, 1)[0];
+
+            this.layers.splice(nextLayerId, 0, layerTemp);
+            Editor.instance.setLayerId(nextLayerId);
+        })
     }
 
     /**
