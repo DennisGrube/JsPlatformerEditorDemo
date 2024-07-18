@@ -5,8 +5,8 @@ import Input from "../Input.mjs";
 import Vector2 from "../Maths/Vector2.mjs";
 import { Rectangle } from "../Maths/Shapes.mjs";
 import MathHelper from "../Maths/MathHelper.mjs";
-import Game from "../Game/Game.mjs";
-import EntityInspector from "../Game/EntityInspector.mjs";
+import Game from "../../Game/Game.mjs";
+import EntityInspector from "../../Game/EntityInspector.mjs";
 
 import Entity from "./Entity.mjs";
 import Transform from "./Transform.mjs";
