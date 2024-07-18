@@ -40,3 +40,10 @@ Current Common features:
   - Vector2 and basic and basic related math (lerp)
   - MathHelper (clamp and lerp)
   - Camera2D with zoom, toWorld, toScreen, bounds, lookAt related functions
+
+Important missing features:
+  - Tilemap import/export
+  - Loading of local tilesets
+  - Resizing of tilemap
+  - Flood fill
+  - An *actual* game
