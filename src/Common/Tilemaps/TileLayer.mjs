@@ -67,6 +67,7 @@ export default class TileLayer {
             }
         }
 
+        this.#canvas.resize(this.width * TILE_SIZE, this.height * TILE_SIZE);
         this.updateCanvasOnNextRepaint();
     }
 
