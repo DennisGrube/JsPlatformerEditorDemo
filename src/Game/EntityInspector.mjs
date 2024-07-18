@@ -1,4 +1,4 @@
-import { designRes } from "/src/Common/Canvas.mjs";
+import { designRes } from "../Common/Canvas.mjs";
 import Game from "../Game/Game.mjs";
 
 export default class EntityInspector {
