@@ -16,9 +16,6 @@ Game Controls:
   - Cursor keys: Move
   - Space bar: Jump
 
-Important bugs:
-  - When resizing the map to a larger size than the initial size, tiles outside of the initial map's bounds will not be rendered despite properly being present in the array
-
 Current Editor features:
   - Resize tileset and tilemap UI area via separator
   - Multiple tile layers
