@@ -10,6 +10,7 @@ import Size from "/src/Common/Maths/Size.mjs";
 import Tilemap from "/src/Common/Tilemaps/Tilemap.mjs";
 import { TILE_SIZE } from "/src/Common/Tilemaps/Tile.mjs";
 
+import TilemapEditor from "./TilemapEditor.mjs";
 import TilesetPicker from "./TilesetPicker.mjs";
 
 const updateRate = 60;
@@ -39,7 +40,6 @@ const cameraScrollStep = 64;
 export default class Editor {
     static instance;
     static selectedLayerId = 0;
-    mapCanvas;
     tileset = new Texture(`forest.png`);
     tilesets = [`forest.png`, `inner.png`, `cave.png`, `overworld.png`];
     tilesetsAmount = this.tilesets.length;
@@ -47,30 +47,23 @@ export default class Editor {
     state = ``;
     stateIfIndeterminate = editorState.indeterminate;
 
+    get fixedDt() { return (1000 / updateRate) / 1000; } // fixed delta time, in seconds
     startTime = 0;
     accumulatedDt = 0;
-    fixedDt = (1000 / updateRate) / 1000; // fixed delta time, in seconds
     previousTime = 0;
     ticks = 0;
 
     get zoomMin() { return 1; }
     get zoomMax() { return 8; }
-    tileSelectionColor = `#2288FF`;
-    tileHoverColor = `#DDDDDD`;
+    get tileSelectionColor() { return `#2288FF`; }
+    get tileHoverColor() { return `#DDDDDD`; }
 
-    selectedTilesMax = 16;
+    get selectedTilesMax() { return 16; }
 
+    // Those stay here because they need to be accessed from both TilemapEditor.mjs and TilesetPicker.mjs
     selectedTiles = new Array(this.selectedTilesMax * this.selectedTilesMax);
     selectedTilesStart = new Rectangle(0, 0, TILE_SIZE, TILE_SIZE);
     selectedTilesEnd = new Rectangle(0, 0, TILE_SIZE, TILE_SIZE);
-
-    mapDiv = document.getElementById(`map_container`);
-    mapCamera;
-    mapPaneWidth = 0;
-    mapPaneHeight = 0;
-    mapSize = new Size(40, 35);
-    tilemap = new Tilemap(this.mapSize.width, this.mapSize.height, 3);
-    tilePaintStart = new Vector2(0, 0);
 
     exit = false;
     navHeight = document.getElementById(`switch`).offsetHeight;
@@ -87,9 +80,9 @@ export default class Editor {
     layerSelect = document.getElementById(`layer_select`);
     layersText = document.getElementById(`layers_amount`);
     stats = new Map();
-    tilesetPicker;
 
-    tilemapZoomButtons = new Map();
+    tilesetPicker;
+    tilemapEditor;
 
     canResize = true;
     isInitialized = false;
@@ -99,23 +92,11 @@ export default class Editor {
 
         this.stats.set(`mapSize`, document.getElementById(`stats_map_size`));
         this.stats.set(`cursorPos`, document.getElementById(`stats_cursor_pos`));
-        this.stats.get(`mapSize`).innerHTML = `Map Size: ${this.mapSize.width} x ${this.mapSize.height}`;
-
-        this.tilemapZoomButtons.set(`-`, document.getElementById(`map_zoom_-`));
-        this.tilemapZoomButtons.set(`o`, document.getElementById(`map_zoom_o`));
-        this.tilemapZoomButtons.set(`+`, document.getElementById(`map_zoom_+`));
-        this.tilemapZoomButtons.set(`text`, document.getElementById(`map_zoom_text`));
-
-        this.tilemapZoomButtons.get(`-`).addEventListener(`click`, () => { Editor.instance.setZoom(this.mapCanvas, this.mapCamera, this.mapCamera.zoom - 1); });
-        this.tilemapZoomButtons.get(`o`).addEventListener(`click`, () => { Editor.instance.setZoom(this.mapCanvas, this.mapCamera, 1); });
-        this.tilemapZoomButtons.get(`+`).addEventListener(`click`, () => { Editor.instance.setZoom(this.mapCanvas, this.mapCamera, this.mapCamera.zoom + 1); });
 
         this.tilesetPicker = new TilesetPicker();
-        this.mapCanvas = new Canvas(`map_canvas`);
-        this.mapCamera = new Camera(Editor.instance.mapCanvas);
-        this.mapCanvas.setScale(1);
+        this.tilemapEditor = new TilemapEditor();
 
-        this.tilemap.setTexture(this.tileset);
+        this.tilemapEditor.tilemap.setTexture(this.tileset);
 
         for (let y = 0; y < this.selectedTilesMax; y++) {
             for (let x = 0; x < this.selectedTilesMax; x++) {
@@ -124,8 +105,6 @@ export default class Editor {
         }
 
         this.selectedTiles[0].setSize(16, 16);
-
-        this.onResize();
 
         document.onmousemove = this.handleMouseMove.bind(this);
         window.addEventListener(`resize`, this.onResize.bind(this));
@@ -138,7 +117,7 @@ export default class Editor {
 
             if (id instanceof KeyboardEvent) {
                 let key = parseInt(id.key);
-                if (key < 1 || key > this.tilemap.layers.length || isNaN(key)) {
+                if (key < 1 || key > this.tilemapEditor.tilemap.layers.length || isNaN(key)) {
                     return;
                 }
                 _id = key - 1; // When 1 is pressed, Layer[0] should be selected
@@ -190,9 +169,10 @@ export default class Editor {
                 this.state === editorState.hoveringTileset);
         }
 
-        let clearRect = new Rectangle(0, 0, 0, 0);
-        this.tilemap.clear(clearRect);
+        this.tilemapEditor.tilemap.clear(null);
         this.layerSelect.value = 1;
+
+        this.onResize();
 
         requestAnimationFrame(this.#tick.bind(this));
     }
@@ -206,7 +186,7 @@ export default class Editor {
             if (Input.isNewKeyPress(`scrolldown`)) {
                 Editor.selectedLayerId--;
                 if (Editor.selectedLayerId < 0) {
-                    Editor.selectedLayerId = this.tilemap.layers.length - 1;
+                    Editor.selectedLayerId = this.tilemapEditor.tilemap.layers.length - 1;
                 }
 
                 this.layerSelect.value = Editor.selectedLayerId + 1;
@@ -214,7 +194,7 @@ export default class Editor {
 
             if (Input.isNewKeyPress(`scrollup`)) {
                 Editor.selectedLayerId++;
-                if (Editor.selectedLayerId >= this.tilemap.layers.length) {
+                if (Editor.selectedLayerId >= this.tilemapEditor.tilemap.layers.length) {
                     Editor.selectedLayerId = 0;
                 }
 
@@ -224,7 +204,7 @@ export default class Editor {
             Editor.selectedLayerId = parseInt(this.layerSelect.value) - 1;
         }
 
-        this.layerSelect.max = this.tilemap.layers.length;
+        this.layerSelect.max = this.tilemapEditor.tilemap.layers.length;
     }
 
     setTileset(id) {
@@ -281,7 +261,7 @@ export default class Editor {
             }
         }
 
-        this.mapDiv.onmouseover = () => {
+        this.tilemapEditor.div.onmouseover = () => {
             this.stateIfIndeterminate = editorState.hoveringMapCanvas;
             if (this.state !== editorState.movingSeparator &&
                 this.state !== editorState.movingTileset &&
@@ -435,8 +415,8 @@ export default class Editor {
 
         // Center the map on view upon load and shift the tileset a little so that the bounds are visible
         if (!this.isInitialized && this.tileset.isLoaded()) {
-            this.mapCamera.position.x -= this.mapCanvas.width / 2 - this.tilemap.bounds.width / 2;
-            this.mapCamera.position.y -= this.mapCanvas.height / 2 - this.tilemap.bounds.height / 2;
+            this.tilemapEditor.camera.position.x -= this.tilemapEditor.canvas.width / 2 - this.tilemapEditor.tilemap.bounds.width / 2;
+            this.tilemapEditor.camera.position.y -= this.tilemapEditor.canvas.height / 2 - this.tilemapEditor.tilemap.bounds.height / 2;
             this.tilesetPicker.camera.position.x -= 4;
             this.tilesetPicker.camera.position.y -= 4;
             this.isInitialized = true;
@@ -449,130 +429,15 @@ export default class Editor {
             Input.clearAll();
         }
 
-        let mousePosMap = this.mapCamera.toWorld(this.mousePos);
-
-        let paintTiles = () => {
-            if (Input.isKeyHeld(`lmb`)) {
-                let xBudget = Math.abs(this.mousePosDelta.x);
-                let yBudget = Math.abs(this.mousePosDelta.y);
-                const xDir = Math.sign(this.mousePosDelta.x);
-                const yDir = Math.sign(this.mousePosDelta.y);
-                const previousMousePos = new Vector2(this.mousePos.x - xBudget * xDir, this.mousePos.y - yBudget * yDir);
-
-                // TODO: make this tile based instead of pixel based
-                do {
-                    let hoveredTile = this.getTileAtPosition(
-                        Editor.instance.mapCanvas,
-                        this.mapCamera,
-                        new Vector2(previousMousePos.x + xBudget * xDir, previousMousePos.y + yBudget * yDir),
-                        tileCoords.grid);
-
-                    let tilesUnion = this.getSelectedTilesUnion();
-                    let tilesAmount = new Vector2(tilesUnion.width / TILE_SIZE, tilesUnion.height / TILE_SIZE);
-
-                    let offset = new Vector2(
-                        (hoveredTile.x - this.tilePaintStart.x) % tilesAmount.x,
-                        (hoveredTile.y - this.tilePaintStart.y) % tilesAmount.y
-                    );
-
-                    // required for the stamps to work properly when moving west or north of origin
-                    if (offset.x < 0) {
-                        offset.x += tilesAmount.x;
-                    }
-
-                    if (offset.y < 0) {
-                        offset.y += tilesAmount.y;
-                    }
-
-                    for (let _y = 0; _y < tilesAmount.y; _y++) {
-                        for (let _x = 0; _x < tilesAmount.x; _x++) {
-                            let src = this.selectedTiles[this.selectedTilesMax * ((_y + offset.y) % tilesAmount.y) + (_x + offset.x) % tilesAmount.x];
-                            this.tilemap.setTile(Editor.selectedLayerId, hoveredTile.x + _x, hoveredTile.y + _y, src);
-                        }
-                    }
-
-                    xBudget = Math.max(xBudget - 1, 0);
-                    yBudget = Math.max(yBudget - 1, 0);
-                } while (xBudget > 0 || yBudget > 0);
-            }
-        }
 
         if (this.state === editorState.indeterminate) {
             this.state = this.stateIfIndeterminate;
         }
 
-        this.tilesetPicker.update(dt);
+        this.state = this.tilesetPicker.update(dt, this.state);
+        this.state = this.tilemapEditor.update(dt, this.state);
+
         switch (this.state) {
-            // ----------------------
-            //          MAP
-            // ----------------------
-            case editorState.hoveringMapCanvas:
-                if (this.scrollCamera(this.mapCanvas, this.mapCamera)) {
-                    this.clampCamera(this.mapCanvas, this.mapCamera, this.tilemap.bounds);
-                }
-
-                if ((Input.isKeyHeld(`space`) && Input.isNewKeyPress(`lmb`)) || Input.isNewKeyPress(`mmb`)) {
-                    this.state = editorState.movingMap;
-                } else if (Input.isNewKeyPress(`lmb`)) {
-                    let start = this.getTileAtPosition(Editor.instance.mapCanvas, this.mapCamera, this.mousePos, tileCoords.grid);
-                    this.tilePaintStart.set(start.x, start.y);
-                    this.state = editorState.paintingTiles;
-                }
-
-                if (this.doZoom(Editor.instance.mapCanvas, this.mapCamera)) {
-                    this.clampCamera(this.mapCanvas, this.mapCamera, this.tilemap.bounds);
-                }
-
-                if (this.tilemap.bounds.contains(mousePosMap)) {
-                    this.state = editorState.hoveringMap;
-                }
-
-                break;
-
-            case editorState.hoveringMap:
-                if (this.scrollCamera(this.mapCanvas, this.mapCamera)) {
-                    this.clampCamera(this.mapCanvas, this.mapCamera, this.tilemap.bounds);
-                }
-
-                if ((Input.isKeyHeld(`space`) && Input.isNewKeyPress(`lmb`)) || Input.isNewKeyPress(`mmb`)) {
-                    this.state = editorState.movingMap;
-                } else if (Input.isNewKeyPress(`lmb`)) {
-                    let start = this.getTileAtPosition(Editor.instance.mapCanvas, this.mapCamera, this.mousePos, tileCoords.grid);
-                    this.tilePaintStart.set(start.x, start.y);
-                    this.state = editorState.paintingTiles;
-                }
-
-                if (this.doZoom(Editor.instance.mapCanvas, this.mapCamera)) {
-                    this.clampCamera(this.mapCanvas, this.mapCamera, this.tilemap.bounds);
-                }
-
-                if (!this.tilemap.bounds.contains(mousePosMap)) {
-                    this.state = editorState.hoveringMapCanvas;
-                }
-
-                break;
-
-            case editorState.paintingTiles:
-                paintTiles();
-                if (Input.isNewKeyRelease(`lmb`)) {
-                    this.state = editorState.indeterminate;
-                }
-
-                break;
-
-            case editorState.movingMap:
-                this.moveCamera(Editor.instance.mapCanvas, this.mapCamera);
-                this.clampCamera(this.mapCanvas, this.mapCamera, this.tilemap.bounds);
-
-                if (Input.isNewKeyRelease(`space`) || Input.isNewKeyRelease(`mmb`)) {
-                    this.state = editorState.indeterminate;
-                }
-
-                break;
-
-            // -----------------------
-            //       SEPARATOR
-            // -----------------------
             case editorState.hoveringSeparator:
                 if (Input.isNewKeyPress(`lmb`)) {
                     this.state = editorState.movingSeparator;
@@ -599,18 +464,7 @@ export default class Editor {
                 break;
         }
 
-
-        this.tilemap.update(dt);
         this.stateLabel.innerText = `State: ${this.state}`;
-        this.tilemapZoomButtons.get(`text`).innerText = `Zoom: ${this.mapCamera.zoom}`;
-
-        if (Input.isNewKeyPress(`q`)) {
-            for (let y = 0; y < this.mapSize.height; y++) {
-                for (let x = 0; x < this.mapSize.width; x++) {
-                    console.log(this.tilemap.layers[0].tiles[x][y]);
-                }
-            }
-        }
 
         Input.afterUpdate();
     }
@@ -640,66 +494,8 @@ export default class Editor {
     }
 
     #draw(dt) {
-        let drawMap = () => {
-            let cam = this.mapCamera;
-
-            let hoveredTileRect = this.getTileAtPosition(this.mapCanvas, this.mapCamera, this.mousePos);
-            hoveredTileRect.setSize(0, 0);
-
-            let inflatedBounds = this.tilemap.bounds;
-            inflatedBounds.inflate(1, 1);
-
-            for (let x = 0; x < this.selectedTilesMax; x++) {
-                hoveredTileRect.width += this.selectedTiles[x].width;
-            }
-
-            for (let y = 0; y < this.selectedTilesMax; y++) {
-                hoveredTileRect.height += this.selectedTiles[y * this.selectedTilesMax].height;
-            }
-
-            // TODO: Hack; implement properly. This does not belong into draw()
-            let statsText = `-, -`;
-
-            if (hoveredTileRect.intersects(this.tilemap.bounds)) {
-                statsText = `${hoveredTileRect.x / TILE_SIZE}, ${hoveredTileRect.y / TILE_SIZE}`;
-                if (hoveredTileRect.width > 16 || hoveredTileRect.height > 16) {
-                    statsText += ` | 
-                    ${(hoveredTileRect.x + hoveredTileRect.width) / TILE_SIZE - 1}, 
-                    ${(hoveredTileRect.y + hoveredTileRect.height) / TILE_SIZE - 1}`;
-                }
-            }
-
-            this.stats.get(`cursorPos`).innerHTML = statsText;
-
-            this.mapCanvas.ctx.clearRect(0, 0, this.mapCanvas.element.width, this.mapCanvas.element.height);
-
-            this.tilemap.draw(this.mapCanvas, cam);
-            inflatedBounds.draw(this.mapCanvas, null, `#777`, cam, 1, 1);
-
-            // Draw the current tile selection as a transparent overlay at cursor position
-            if (hoveredTileRect.intersects(this.tilemap.bounds) &&
-                (this.state === editorState.hoveringMap || this.state === editorState.hoveringMapCanvas)) {
-                let pos = new Vector2(0, 0);
-
-                for (let y = 0; y < this.selectedTilesMax; y++) {
-                    for (let x = 0; x < this.selectedTilesMax; x++) {
-                        pos.set(hoveredTileRect.x + x * TILE_SIZE, hoveredTileRect.y + y * TILE_SIZE);
-                        if (pos.x < 0 || pos.x >= this.tilemap.bounds.width || pos.y < 0 || pos.y >= this.tilemap.bounds.height) {
-                            continue;
-                        }
-
-                        SpriteBatch.draw(
-                            this.mapCanvas, this.tilemap.texture, pos, this.selectedTiles[this.selectedTilesMax * y + x], 
-                            null, 1, false, false, cam, 0.5);
-                    }
-                }
-
-                hoveredTileRect.draw(this.mapCanvas, null, this.tileHoverColor, this.mapCamera, 1, 1);
-            }
-        }
-
         this.tilesetPicker.draw(dt);
-        drawMap();
+        this.tilemapEditor.draw(dt);
     }
 
     #tick(timeStamp) {
@@ -727,6 +523,7 @@ export default class Editor {
     }
 
     onResize(event) {
+        // Need to query canvases via document.getElementById() here to circumvent a few errors
         let tilesetCanvasStyle = getComputedStyle(document.getElementById(`tileset_canvas`));
         let tilesetMarginLeft = parseInt(tilesetCanvasStyle.marginLeft);
         let tilesetMarginRight = parseInt(tilesetCanvasStyle.marginRight);
@@ -745,15 +542,14 @@ export default class Editor {
         let outlineWidth = parseInt(mapCanvasStyle.outlineWidth);
         let infoRowHeight = parseInt(document.getElementById(`map_stats`).clientHeight)
 
-        Editor.instance.mapCanvas.resize(
+        console.log(infoRowHeight, mapMarginBottom, tilesetMarginBottom);
+        console.log(mapMarginTop, tilesetMarginTop);
+
+        this.tilemapEditor.onResize(
             window.innerWidth - this.tilesetPicker.paneWidth - mapMarginLeft - mapMarginRight - tilesetMarginLeft - tilesetMarginRight - separatorWidth - 2 * outlineWidth,
             window.innerHeight - this.navHeight - mapMarginTop - mapMarginBottom - outlineWidth - infoRowHeight);
 
         this.tilesetPicker.onResize(this.tilesetPicker.paneWidth,
             window.innerHeight - this.navHeight - tilesetMarginTop - tilesetMarginBottom - outlineWidth - infoRowHeight);
-
-        this.tilesetPicker.paneHeight = this.tilesetPicker.canvas.element.height;
-        this.mapPaneHeight = Editor.instance.mapCanvas.element.height;
-        this.mapPaneWidth = Editor.instance.mapCanvas.element.width;
     }
 }

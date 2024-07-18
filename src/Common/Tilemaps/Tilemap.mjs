@@ -28,7 +28,15 @@ export default class Tilemap {
         }
     }
 
+    /**
+     * If src is null, clears with empty tile
+     * @param {Rectangle|null} src 
+     */
     clear(src) {
+        if (src === null) {
+            src = new Rectangle(0, 0, 0, 0);
+        }
+
         for (let layer of this.layers) {
             layer.clear(src);
         }
@@ -50,7 +58,7 @@ export default class Tilemap {
     }
 
     popLayer() {
-        if(this.layers.length > 1){
+        if (this.layers.length > 1) {
             this.layers.pop();
         } else {
             console.log(`Cannot delete last layer!`);

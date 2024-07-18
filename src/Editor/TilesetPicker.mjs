@@ -35,9 +35,6 @@ export default class TilesetPicker {
 
     constructor() {
         this.paneWidth = 512;
-        this.canvas = new Canvas(`tileset_canvas`)
-        this.camera = new Camera(this.canvas)
-        this.canvas.setScale(1);
 
         this.zoomButtons.set(`-`, document.getElementById(`tileset_zoom_-`));
         this.zoomButtons.set(`o`, document.getElementById(`tileset_zoom_o`));
@@ -46,6 +43,10 @@ export default class TilesetPicker {
         this.zoomButtons.get(`-`).addEventListener(`click`, () => { Editor.instance.setZoom(this.canvas, this.camera, this.camera.zoom - 1); });
         this.zoomButtons.get(`o`).addEventListener(`click`, () => { Editor.instance.setZoom(this.canvas, this.camera, 1); });
         this.zoomButtons.get(`+`).addEventListener(`click`, () => { Editor.instance.setZoom(this.canvas, this.camera, this.camera.zoom + 1); });
+
+        this.canvas = new Canvas(`tileset_canvas`)
+        this.camera = new Camera(this.canvas)
+        this.canvas.setScale(1);
 
         for (let i = 0; i < Editor.instance.tilesets.length; i++) {
             let tileset = Editor.instance.tilesets[i];
@@ -58,9 +59,6 @@ export default class TilesetPicker {
         });
     }
 
-    onResize(width, height) {
-        this.canvas.resize(width, height);
-    }
 
     // TODO: move to TilemapEditor.mjs
     clearTileSelection() {
@@ -78,11 +76,11 @@ export default class TilesetPicker {
         Editor.instance.selectedTiles[0].set(0, 0, TILE_SIZE, TILE_SIZE);
     }
 
-    update(dt) {
-        switch (Editor.instance.state) {
+    update(dt, state) {
+        switch (state) {
             case editorState.hoveringTilesetCanvas:
                 if ((Input.isKeyHeld(`space`) && Input.isNewKeyPress(`lmb`)) || Input.isNewKeyPress(`mmb`)) {
-                    Editor.instance.state = editorState.movingTileset;
+                    state = editorState.movingTileset;
                 }
 
                 if (Editor.instance.scrollCamera(this.canvas, this.camera)) {
@@ -94,13 +92,13 @@ export default class TilesetPicker {
                 }
 
                 if (Editor.instance.tileset.bounds.contains(this.mousePos)) {
-                    Editor.instance.state = editorState.hoveringTileset;
+                    state = editorState.hoveringTileset;
                 }
                 break;
 
             case editorState.hoveringTileset:
                 if ((Input.isKeyHeld(`space`) && Input.isNewKeyPress(`lmb`)) || Input.isNewKeyPress(`mmb`)) {
-                    Editor.instance.state = editorState.movingTileset;
+                    state = editorState.movingTileset;
                 }
 
                 if (Editor.instance.scrollCamera(this.canvas, this.camera)) {
@@ -112,13 +110,13 @@ export default class TilesetPicker {
                 }
 
                 if (!Editor.instance.tileset.bounds.contains(this.mousePos)) {
-                    Editor.instance.state = editorState.indeterminate;
+                    state = editorState.indeterminate;
                 }
 
                 if (!Input.isKeyHeld(`space`) && Input.isNewKeyPress(`lmb`)) {
                     Editor.instance.selectedTilesStart = Editor.instance.getTileAtPosition(this.canvas, this.camera, Editor.instance.mousePos);
                     Editor.instance.selectedTilesEnd = Editor.instance.selectedTilesStart.copy();
-                    Editor.instance.state = editorState.selectingTiles;
+                    state = editorState.selectingTiles;
                 }
 
                 break;
@@ -128,8 +126,9 @@ export default class TilesetPicker {
                 Editor.instance.clampCamera(this.canvas, this.camera, Editor.instance.tileset.bounds);
 
                 if (Input.isNewKeyRelease(`space`) || Input.isNewKeyRelease(`mmb`)) {
-                    Editor.instance.state = editorState.indeterminate;
+                    state = editorState.indeterminate;
                 }
+
                 break;
 
             case editorState.selectingTiles:
@@ -160,7 +159,7 @@ export default class TilesetPicker {
                 )
 
                 if (Input.isNewKeyRelease(`lmb`)) {
-                    Editor.instance.state = editorState.indeterminate;
+                    state = editorState.indeterminate;
                     this.clearTileSelection();
 
                     let selectedTilesUnion = Editor.instance.getSelectedTilesUnion();
@@ -177,6 +176,7 @@ export default class TilesetPicker {
         }
 
         this.zoomText.innerHTML = this.camera.zoom;
+        return state;
     }
 
     draw(dt) {
@@ -195,4 +195,9 @@ export default class TilesetPicker {
             hoveredTileRect.draw(this.canvas, null, Editor.instance.tileHoverColor, this.camera, 1, 1);
         }
     }
+
+    onResize(width, height) {
+        this.canvas.resize(width, height);
+    }
+
 }
