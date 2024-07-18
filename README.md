@@ -56,8 +56,6 @@ Current Common features:
 
 Important missing features:
   - Tilemap import/export
-  - Loading of local tilesets
-  - Resizing of tilemap
   - Flood fill
   - Right click to absorb tiles from map
   - An *actual* game
