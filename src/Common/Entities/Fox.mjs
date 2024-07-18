@@ -1,12 +1,12 @@
-import Texture from "/src/Common/Texture.mjs";
-import Animation from "/src/Common/Sprites/Animation.mjs";
-import SpriteBatch from "/src/Common/SpriteBatch.mjs";
-import Input from "/src/Common/Input.mjs";
-import Vector2 from "/src/Common/Maths/Vector2.mjs";
-import { Rectangle } from "/src/Common/Maths/Shapes.mjs";
-import MathHelper from "/src/Common/Maths/MathHelper.mjs";
-import Game from "/src/Game/Game.mjs";
-import EntityInspector from "/src/Game/EntityInspector.mjs";
+import Texture from "../Texture.mjs";
+import Animation from "../Sprites/Animation.mjs";
+import SpriteBatch from "../SpriteBatch.mjs";
+import Input from "../Input.mjs";
+import Vector2 from "../Maths/Vector2.mjs";
+import { Rectangle } from "../Maths/Shapes.mjs";
+import MathHelper from "../Maths/MathHelper.mjs";
+import Game from "../Game/Game.mjs";
+import EntityInspector from "../Game/EntityInspector.mjs";
 
 import Entity from "./Entity.mjs";
 import Transform from "./Transform.mjs";

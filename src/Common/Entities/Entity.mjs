@@ -1,5 +1,5 @@
-import { Shape } from "/src/Common/Maths/Shapes.mjs";
-import Vector2 from "/src/Common/Maths/Vector2.mjs";
+import { Shape } from "../Maths/Shapes.mjs";
+import Vector2 from "../Maths/Vector2.mjs";
 
 import Transform from "./Transform.mjs";
 

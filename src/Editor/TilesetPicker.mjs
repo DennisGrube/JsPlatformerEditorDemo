@@ -1,11 +1,11 @@
-import Canvas from "/src/Common/Canvas.mjs";
-import Camera from "/src/Common/Camera.mjs";
-import Input from "/src/Common/Input.mjs";
-import Vector2 from "/src/Common/Maths/Vector2.mjs";
-import SpriteBatch from "/src/Common/SpriteBatch.mjs";
-import MathHelper from "/src/Common/Maths/MathHelper.mjs";
-import { TILE_SIZE } from "/src/Common/Tilemaps/Tile.mjs";
-import Size from "/src/Common/Maths/Size.mjs";
+import Canvas from "../Common/Canvas.mjs";
+import Camera from "../Common/Camera.mjs";
+import Input from "../Common/Input.mjs";
+import Vector2 from "../Common/Maths/Vector2.mjs";
+import SpriteBatch from "../Common/SpriteBatch.mjs";
+import MathHelper from "../Common/Maths/MathHelper.mjs";
+import { TILE_SIZE } from "../Common/Tilemaps/Tile.mjs";
+import Size from "../Common/Maths/Size.mjs";
 
 import Editor from "./Editor.mjs";
 import { editorState } from "./Editor.mjs";

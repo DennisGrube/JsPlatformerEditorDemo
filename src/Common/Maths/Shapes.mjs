@@ -1,6 +1,6 @@
-import DrawHelper from "/src/Common/DrawHelpers.mjs";
-import Entity from "/src/Common/Entities/Entity.mjs";
-import NotImplementedError from "/src/Common/Error.mjs";
+import DrawHelper from "../DrawHelpers.mjs";
+import Entity from "../Entities/Entity.mjs";
+import NotImplementedError from "../Error.mjs";
 
 import Vector2 from "./Vector2.mjs";
 

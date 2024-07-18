@@ -1,5 +1,5 @@
 import { designRes } from "/src/Common/Canvas.mjs";
-import Game from "/src/Game/Game.mjs";
+import Game from "../Game/Game.mjs";
 
 export default class EntityInspector {
     static items = new Map();

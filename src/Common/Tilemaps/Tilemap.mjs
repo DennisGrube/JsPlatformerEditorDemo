@@ -1,6 +1,6 @@
-import Vector2 from "/src/Common/Maths/Vector2.mjs";
-import Editor from "/src/Editor/Editor.mjs";
-import { Rectangle } from "/src/Common/Maths/Shapes.mjs";
+import Vector2 from "../Maths/Vector2.mjs";
+import Editor from "../../Editor/Editor.mjs";
+import { Rectangle } from "../Maths/Shapes.mjs";
 
 import { TILE_SIZE } from "./Tile.mjs";
 import TileLayer from "./TileLayer.mjs";
@@ -153,7 +153,6 @@ export default class Tilemap {
 
     setTile(layerId, x, y, src) {
         if (x < 0 || x >= this.width || y < 0 || y >= this.height) {
-            console.log(`bananen`);
             return;
         }
 

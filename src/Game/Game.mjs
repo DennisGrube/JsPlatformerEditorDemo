@@ -1,12 +1,12 @@
-import Canvas from "/src/Common/Canvas.mjs";
-import Texture from "/src/Common/Texture.mjs";
-import SpriteBatch from "/src/Common/SpriteBatch.mjs";
-import Vector2 from "/src/Common/Maths/Vector2.mjs";
-import Camera from "/src/Common/Camera.mjs";
-import Fox from "/src/Common/Entities/Fox.mjs";
-import Input from "/src/Common/Input.mjs";
-import MathHelper from "/src/Common/Maths/MathHelper.mjs";
-import { designRes } from "/src/Common/Canvas.mjs";
+import Canvas from "../Common/Canvas.mjs";
+import Texture from "../Common/Texture.mjs";
+import SpriteBatch from "../Common/SpriteBatch.mjs";
+import Vector2 from "../Common/Maths/Vector2.mjs";
+import Camera from "../Common/Camera.mjs";
+import Fox from "../Common/Entities/Fox.mjs";
+import Input from "../Common/Input.mjs";
+import MathHelper from "../Common/Maths/MathHelper.mjs";
+import { designRes } from "../Common/Canvas.mjs";
 
 import EntityInspector from "./EntityInspector.mjs";
 

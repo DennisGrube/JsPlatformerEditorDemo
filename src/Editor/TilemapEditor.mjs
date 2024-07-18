@@ -1,11 +1,10 @@
-import Tilemap from "/src/Common/Tilemaps/Tilemap.mjs";
-import Size from "/src/Common/Maths/Size.mjs";
-import Vector2 from "/src/Common/Maths/Vector2.mjs";
-import Canvas from "/src/Common/Canvas.mjs";
-import Camera from "/src/Common/Camera.mjs";
-import Input from "/src/Common/Input.mjs";
-import { TILE_SIZE } from "/src/Common/Tilemaps/Tile.mjs";
-import SpriteBatch from "/src/Common/SpriteBatch.mjs";
+import Tilemap from "../Common/Tilemaps/Tilemap.mjs";
+import Vector2 from "../Common/Maths/Vector2.mjs";
+import Canvas from "../Common/Canvas.mjs";
+import Camera from "../Common/Camera.mjs";
+import Input from "../Common/Input.mjs";
+import { TILE_SIZE } from "../Common/Tilemaps/Tile.mjs";
+import SpriteBatch from "../Common/SpriteBatch.mjs";
 
 import Editor from "./Editor.mjs";
 import { tileCoords } from "./Editor.mjs";
