@@ -12,6 +12,7 @@ export default class Tilemap {
     height;
     #hasFinishedLoading = false;
     #hasFinishedLoadingThisFrame = false;
+    layerButtons = new Map();
 
     get bounds() {
         return new Rectangle(0, 0, this.width * TILE_SIZE, this.height * TILE_SIZE);
@@ -26,6 +27,13 @@ export default class Tilemap {
             this.layers[i] = new TileLayer(w, h);
             this.layers[i].clear(initialSource);
         }
+
+        this.layerButtons.set(`add`, document.getElementById(`add_layer`));
+        this.layerButtons.set(`remove`, document.getElementById(`remove_layer`));
+        this.layerButtons.set(`shiftUp`, document.getElementById(`shift_layer_up`));
+        this.layerButtons.set(`shiftDown`, document.getElementById(`shift_layer_down`));
+
+        //this.layerButtons.get(`add`).addEventListener(`click`)
     }
 
     /**

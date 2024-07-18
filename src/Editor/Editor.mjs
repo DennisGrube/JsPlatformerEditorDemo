@@ -542,9 +542,6 @@ export default class Editor {
         let outlineWidth = parseInt(mapCanvasStyle.outlineWidth);
         let infoRowHeight = parseInt(document.getElementById(`map_stats`).clientHeight)
 
-        console.log(infoRowHeight, mapMarginBottom, tilesetMarginBottom);
-        console.log(mapMarginTop, tilesetMarginTop);
-
         this.tilemapEditor.onResize(
             window.innerWidth - this.tilesetPicker.paneWidth - mapMarginLeft - mapMarginRight - tilesetMarginLeft - tilesetMarginRight - separatorWidth - 2 * outlineWidth,
             window.innerHeight - this.navHeight - mapMarginTop - mapMarginBottom - outlineWidth - infoRowHeight);

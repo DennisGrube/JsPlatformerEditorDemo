@@ -27,9 +27,9 @@ export default class TilemapEditor {
         this.zoomButtons.set(`+`, document.getElementById(`map_zoom_+`));
         this.zoomButtons.set(`text`, document.getElementById(`map_zoom_text`));
 
-        this.zoomButtons.get(`-`).addEventListener(`click`, () => { Editor.instance.setZoom(this.mapCanvas, this.camera, this.camera.zoom - 1); });
-        this.zoomButtons.get(`o`).addEventListener(`click`, () => { Editor.instance.setZoom(this.mapCanvas, this.camera, 1); });
-        this.zoomButtons.get(`+`).addEventListener(`click`, () => { Editor.instance.setZoom(this.mapCanvas, this.camera, this.camera.zoom + 1); });
+        this.zoomButtons.get(`-`).addEventListener(`click`, () => { Editor.instance.setZoom(this.canvas, this.camera, this.camera.zoom - 1); });
+        this.zoomButtons.get(`o`).addEventListener(`click`, () => { Editor.instance.setZoom(this.canvas, this.camera, 1); });
+        this.zoomButtons.get(`+`).addEventListener(`click`, () => { Editor.instance.setZoom(this.canvas, this.camera, this.camera.zoom + 1); });
 
         this.canvas = new Canvas(`map_canvas`);
         this.camera = new Camera(this.canvas);

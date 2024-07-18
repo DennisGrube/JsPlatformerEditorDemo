@@ -59,7 +59,6 @@ export default class TilesetPicker {
         });
     }
 
-
     // TODO: move to TilemapEditor.mjs
     clearTileSelection() {
         for (let y = 0; y < Editor.instance.selectedTilesMax; y++) {
