@@ -18,6 +18,8 @@ Current Editor features:
   - Shift tiles to paint on mouse move while clicking + dragging to always paint the full stamp instead of overwriting parts of it
   - Darken layers that are behind the selected layer
   - Draw layers translucently that are in front of the selected layer
+  - Add and remove layers
+  - Shift layers up or down within the array
 
 Current Game features:
   - Sprite sheet animations
