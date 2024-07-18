@@ -7,6 +7,9 @@ https://dennisgr.itch.io/jsplatformereditordemo
 
 Loading assets may take a while depending on itch.io's load, please be patient.
 
+Important bugs:
+  - When resizing the map to a larger size than the initial size, tiles outside of the initial map's bounds will not be rendered
+
 Current Editor features:
   - Resize tileset and tilemap UI area via separator
   - Multiple tile layers
@@ -20,6 +23,7 @@ Current Editor features:
   - Draw layers translucently that are in front of the selected layer
   - Add and remove layers
   - Shift layers up or down within the array
+  - Map resizing
 
 Current Game features:
   - Sprite sheet animations
