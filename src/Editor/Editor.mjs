@@ -229,9 +229,9 @@ export default class Editor {
     setTileset(id) {
         this.currentTilesetId = id;
         this.tileset = new Texture(this.tilesets[this.currentTilesetId]);
-        this.tilemap.setTexture(this.tileset);
-        this.tilemap.forceRepaint(-1);
-        this.tilemap.clipTiles();
+        this.tilemapEditor.tilemap.setTexture(this.tileset);
+        this.tilemapEditor.tilemap.forceRepaint(-1);
+        this.tilemapEditor.tilemap.clipTiles();
     }
 
     #initializeMouseoverAndOutEvents() {
