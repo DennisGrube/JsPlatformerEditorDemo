@@ -1,6 +1,10 @@
 A platforming game and accompanying level editor written in JavaScript.
 Work in Progress.
 
+LIVE DEMO:
+https://dennisgr.itch.io/jsplatformereditordemo
+Loading assets may take a while depending on itch.io's load, please be patient.
+
 Current Editor features:
   - Resize tileset and tilemap UI area via separator
   - Multiple tile layers
