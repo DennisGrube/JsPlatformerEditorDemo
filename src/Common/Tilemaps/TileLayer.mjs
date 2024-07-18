@@ -16,6 +16,7 @@ export default class TileLayer {
 
     get width() { return this.#width; }
     get height() { return this.#height; }
+    get tiles() { return this.#tiles; }
 
     /**
      * 
@@ -48,6 +49,27 @@ export default class TileLayer {
         this.#shouldCanvasUpdate = true;
     }
 
+    setSize(width, height) {
+        const oldWidth = this.#width;
+        const oldHeight = this.#height;
+        const oldTiles = Array.from(this.#tiles);
+        this.#width = width;
+        this.#height = height;
+        this.#tiles = new Array(width * height);
+
+        for (let y = 0; y < this.#height; y++) {
+            for (let x = 0; x < this.#width; x++) {
+                if (x < oldWidth && y < oldHeight) {
+                    this.#tiles[this.#width * y + x] = oldTiles[oldWidth * y + x].copy();
+                } else {
+                    this.#tiles[this.#width * y + x] = new Rectangle(0, 0, 0, 0);
+                }
+            }
+        }
+
+        this.updateCanvasOnNextRepaint();
+    }
+
     clipInvalidTilesOnNextRepaint() {
         this.#shouldTilesBeClipped = true;
     }
@@ -62,14 +84,20 @@ export default class TileLayer {
 
     /**
      * Sets all tiles of this layer to the specified tile
-     * @param {Rectangle} src 
+     * @param {Rectangle|null} src 
      */
     clear(src) {
-        for (let y = 0; y < this.height; y++) {
+        if (src === null) {
+            src = new Rectangle(0, 0, 0, 0);
+        }
+
+        for (let y = 0; y < this.#height; y++) {
             for (let x = 0; x < this.#width; x++) {
                 this.#tiles[this.#width * y + x].set(src);
             }
         }
+
+        this.updateCanvasOnNextRepaint();
     }
 
     /**

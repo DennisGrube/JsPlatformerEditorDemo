@@ -81,6 +81,7 @@
             display: flex;
             align-items: flex-start;
             justify-content: flex-start;
+            gap: 8px;
         }
 
         #stats_cursor_pos {
@@ -117,6 +118,10 @@
             justify-content: space-between;
             align-items: flex-start;
             width: 100%;
+        }
+
+        .map_size_input {
+            width: 48px;
         }
     </style>
 </head>
@@ -190,7 +195,12 @@
         </div>
 
         <div id="map_stats">
-            <div id="stats_map_size">[not initialized]</div>
+            <div id="stats_map_size">
+                <label for="map_input_width">Map Size: </label>
+                <input type="number" id="map_input_width" class="map_size_input" min="1" max="500">
+                <input type="number" id="map_input_height" class="map_size_input" min="1" max="500">
+                <button id="map_size_apply">Apply</button>
+            </div>
             <div id="stats_cursor_pos">[not initialized]</div>
         </div>
     </div>

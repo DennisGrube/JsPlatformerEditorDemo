@@ -62,7 +62,6 @@ export default class EntityInspector {
             EntityInspector.items.get(`yPos`).value = parseFloat(EntityInspector.inspectedEntity.transform.position.y).toFixed(2);
         }
 
-        // TODO: place X and Y so that Y's position is not influenced by X's number of digits
         EntityInspector.items.get(`velocity`).innerHTML =
             `Velocity X: ${parseInt(EntityInspector.inspectedEntity.velocity.x)} 
                 &nbsp;&nbsp;Y: ${parseInt(EntityInspector.inspectedEntity.velocity.y)}`;

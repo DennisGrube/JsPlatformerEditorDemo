@@ -15,11 +15,11 @@ import { editorState } from "./Editor.mjs";
 export default class TilemapEditor {
     zoomButtons = new Map();
     div = document.getElementById(`map_container`);
-    mapSize = new Size(40, 35);
-    tilemap = new Tilemap(this.mapSize.width, this.mapSize.height, 3);
+    tilemap = new Tilemap(60, 40, 3);
     tilePaintStart = new Vector2(0, 0);
     canvas;
     camera;
+    mapSizeUiElements = new Map();
 
     constructor() {
         this.zoomButtons.set(`-`, document.getElementById(`map_zoom_-`));
@@ -30,6 +30,27 @@ export default class TilemapEditor {
         this.zoomButtons.get(`-`).addEventListener(`click`, () => { Editor.instance.setZoom(this.canvas, this.camera, this.camera.zoom - 1); });
         this.zoomButtons.get(`o`).addEventListener(`click`, () => { Editor.instance.setZoom(this.canvas, this.camera, 1); });
         this.zoomButtons.get(`+`).addEventListener(`click`, () => { Editor.instance.setZoom(this.canvas, this.camera, this.camera.zoom + 1); });
+
+        this.mapSizeUiElements.set(`apply`, document.getElementById(`map_size_apply`));
+        this.mapSizeUiElements.set(`width`, document.getElementById(`map_input_width`));
+        this.mapSizeUiElements.set(`height`, document.getElementById(`map_input_height`));
+
+        this.mapSizeUiElements.get(`width`).value = this.tilemap.width;
+        this.mapSizeUiElements.get(`height`).value = this.tilemap.height;
+        this.mapSizeUiElements.get(`apply`).addEventListener(`click`, () => {
+            const min = 1;
+            const max = 500;
+            const width = this.mapSizeUiElements.get(`width`);
+            const height = this.mapSizeUiElements.get(`height`);
+
+            if (width.valueAsNumber >= min && width.valueAsNumber <= max && 
+                height.valueAsNumber >= min && height.valueAsNumber <= max) {
+                this.tilemap.resize(width.valueAsNumber, height.valueAsNumber);
+            } else {
+                width.value = previousWidth;
+                height.value = previousHeight;
+            }
+        })
 
         this.canvas = new Canvas(`map_canvas`);
         this.camera = new Camera(this.canvas);
@@ -94,7 +115,7 @@ export default class TilemapEditor {
                 if ((Input.isKeyHeld(`space`) && Input.isNewKeyPress(`lmb`)) || Input.isNewKeyPress(`mmb`)) {
                     state = editorState.movingMap;
                 } else if (Input.isNewKeyPress(`lmb`)) {
-                    let start = Editor.instance.getTileAtPosition(this.canvas, this.camera, this.mousePos, tileCoords.grid);
+                    let start = Editor.instance.getTileAtPosition(this.canvas, this.camera, Editor.instance.mousePos, tileCoords.grid);
                     this.tilePaintStart.set(start.x, start.y);
                     state = editorState.paintingTiles;
                 }
@@ -153,7 +174,7 @@ export default class TilemapEditor {
 
         this.tilemap.update(dt);
         this.zoomButtons.get(`text`).innerText = `Zoom: ${this.camera.zoom}`;
-        Editor.instance.stats.get(`mapSize`).innerHTML = `Map Size: ${this.mapSize.width} x ${this.mapSize.height}`;
+
         return state;
     }
 

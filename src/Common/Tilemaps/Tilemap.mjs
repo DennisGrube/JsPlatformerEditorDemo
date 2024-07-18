@@ -46,7 +46,7 @@ export default class Tilemap {
         });
 
         this.layerButtons.get(`shiftUp`).addEventListener(`click`, () => {
-            let nextLayerId = Editor.selectedLayerId + 1 < this.layers.length ? Editor.selectedLayerId + 1 : 0; 
+            let nextLayerId = Editor.selectedLayerId + 1 < this.layers.length ? Editor.selectedLayerId + 1 : 0;
             const layerTemp = this.layers.splice(Editor.selectedLayerId, 1)[0];
 
             this.layers.splice(nextLayerId, 0, layerTemp);
@@ -54,12 +54,21 @@ export default class Tilemap {
         })
 
         this.layerButtons.get(`shiftDown`).addEventListener(`click`, () => {
-            let nextLayerId = Editor.selectedLayerId - 1 >= 0 ? Editor.selectedLayerId - 1 : this.layers.length - 1; 
+            let nextLayerId = Editor.selectedLayerId - 1 >= 0 ? Editor.selectedLayerId - 1 : this.layers.length - 1;
             const layerTemp = this.layers.splice(Editor.selectedLayerId, 1)[0];
 
             this.layers.splice(nextLayerId, 0, layerTemp);
             Editor.instance.setLayerId(nextLayerId);
         })
+    }
+
+    resize(width, height) {
+        this.width = width;
+        this.height = height;
+
+        for (let layer of this.layers) {
+            layer.setSize(this.width, this.height);
+        }
     }
 
     /**
@@ -144,6 +153,7 @@ export default class Tilemap {
 
     setTile(layerId, x, y, src) {
         if (x < 0 || x >= this.width || y < 0 || y >= this.height) {
+            console.log(`bananen`);
             return;
         }
 
@@ -164,6 +174,5 @@ export default class Tilemap {
             let darkenAmount = i < Editor.selectedLayerId ? 0.5 : 0;
             this.layers[i].draw(canvas, this.texture, cam, start, end, layerAlpha, darkenAmount);
         }
-
     }
 }

@@ -28,6 +28,7 @@ export const editorState = {
     selectingTiles: `selectingTiles`,
     paintingTiles: `paintingTiles`,
     hoveringToolbar: `hoveringToolbar`,
+    hoveringBottomStuff: `hoveringBottomStuff`,
 }
 
 export const tileCoords = {
@@ -79,6 +80,7 @@ export default class Editor {
     debugLayerLabel = document.getElementById(`d_selected_layer`);
     layerSelect = document.getElementById(`layer_select`);
     layersText = document.getElementById(`layers_amount`);
+    bottomStuff = document.getElementById(`bottom_stuff`);
     stats = new Map();
 
     tilesetPicker;
@@ -90,7 +92,10 @@ export default class Editor {
     constructor() {
         Editor.instance = this; // not quite a singleton, but close enough
 
-        this.stats.set(`mapSize`, document.getElementById(`stats_map_size`));
+        //this.stats.set(`mapSize`, document.getElementById(`stats_map_size`));
+        this.stats.set(`mapWidth`, document.getElementById(`map_width_input`));
+        this.stats.set(`mapHeight`, document.getElementById(`map_height_input`));
+
         this.stats.set(`cursorPos`, document.getElementById(`stats_cursor_pos`));
 
         this.tilesetPicker = new TilesetPicker();
@@ -294,6 +299,17 @@ export default class Editor {
                 this.state !== editorState.movingMap &&
                 this.state !== editorState.paintingTiles) {
                 this.state = editorState.hoveringToolbar;
+            }
+        }
+
+        this.bottomStuff.onmouseover = () => {
+            this.stateIfIndeterminate = editorState.hoveringBottomStuff;
+            if (this.state !== editorState.movingSeparator &&
+                this.state !== editorState.movingTileset &&
+                this.state !== editorState.selectingTiles &&
+                this.state !== editorState.movingMap &&
+                this.state !== editorState.paintingTiles) {
+                this.state = editorState.hoveringBottomStuff;
             }
         }
     }
