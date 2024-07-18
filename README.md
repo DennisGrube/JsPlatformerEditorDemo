@@ -5,7 +5,7 @@ LIVE DEMO:
 
 https://dennisgr.itch.io/jsplatformereditordemo
 
-Loading assets may take a while.
+Loading assets may take a while. Password: habanero
 
 Editor Controls:
  - WASD, Middle Mouse button, Scroll Wheel (vertical, horizontal, click), Space + Left Click: Move camera
