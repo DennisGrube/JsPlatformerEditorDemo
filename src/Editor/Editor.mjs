@@ -64,7 +64,7 @@ export default class Editor {
     exit = false;
     navHeight = document.getElementById(`switch`).offsetHeight;
     canvasContainer = document.getElementById(`container`);
-    stateLabel = document.getElementById(`d_state`);
+    //stateLabel = document.getElementById(`d_state`);
     navWrapperDiv = document.getElementById(`nav_wrapper`);
 
     mousePos = new Vector2(0, 0);
@@ -496,7 +496,7 @@ export default class Editor {
                 break;
         }
 
-        this.stateLabel.innerText = `State: ${this.state}`;
+        //this.stateLabel.innerText = `State: ${this.state}`;
 
         Input.afterUpdate();
     }

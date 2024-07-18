@@ -172,7 +172,7 @@ export default class TilemapEditor {
         }
 
         this.tilemap.update(dt);
-        this.zoomButtons.get(`text`).innerText = `Zoom: ${this.camera.zoom}`;
+        this.zoomButtons.get(`text`).innerText = `Tilemap Zoom: ${this.camera.zoom}`;
 
         return state;
     }

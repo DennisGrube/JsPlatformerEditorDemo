@@ -22,6 +22,12 @@
             display: flex;
         }
 
+        #nav_wrapper {
+            display: flex;
+            justify-content: space-around;
+            width: 100%;
+        }
+
         #tileset_canvas {
             display: block;
             position: sticky;
@@ -42,9 +48,8 @@
         #debug_display {
             display: flex;
             flex-flow: column;
-
-            width: 20%;
-            margin-left: 0px;
+            align-items: center;
+            width: 15%;
             gap: 4px;
         }
 
@@ -92,14 +97,14 @@
         #map_stats {
             display: flex;
             justify-content: space-between;
-            margin-right: 10%;
+            margin-right: 5%;
             width: 33%;
         }
 
         #layers {
             display: flex;
             flex-flow: column;
-            gap: 8px;
+            gap: 4px;
         }
 
         #layer_picker {
@@ -124,9 +129,9 @@
             display: flex;
             flex-flow: column;
             justify-content: center;
-            align-items: flex-start;
+            align-items: center;
             width: 10%;
-            margin-left: 10%;
+            gap: 4px;
         }
 
         .map_size_input {
@@ -150,9 +155,13 @@
         </div>
 
         <div id="debug_display">
-            <label id="d_state" class="debug_label">[empty]</label>
+            <!-- TODO: 
+                    - Fix inconsistent label/text usage, and fix naming in general
+                    - Fix inconsistent layout between editor.html and game.html
+                    - Align Tileset zoom buttons with tileset
+            -->
             <div id="zoom_label">
-                <label for="tileset_zoom_buttons">Zoom: </label>
+                <label for="tileset_zoom_buttons">Tileset Zoom: </label>
                 <text id="tileset_zoom_text">1</text>
             </div>
             <div id="tileset_zoom_buttons">
@@ -174,7 +183,6 @@
                 <button id="shift_layer_up" class="zoom_button">^</button>
                 <button id="shift_layer_down" class="zoom_button">v</button>
             </div>
-
         </div>
 
         <div id="map_zoom_buttons_container">
@@ -185,7 +193,6 @@
                 <button id="map_zoom_+" class="zoom_button">+</button>
             </div>
         </div>
-
     </div>
 
     <div id="container">
@@ -204,7 +211,11 @@
         <div id="tileset_picker_container">
             <select id="tileset_picker"></select>
         </div>
-
+        <!--
+                <div id="state_label">
+            <label id="d_state" class="debug_label">[empty]</label>
+        </div>
+        -->
         <div id="map_stats">
             <div id="stats_map_size">
                 <label for="map_input_width">Map Size: </label>
